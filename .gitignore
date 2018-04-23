@@ -1,0 +1,40 @@
+
+*.egg-info
+*.mo
+*.py[cod]
+# dirs
+bin/
+tmp/
+build/
+lib/
+.tox/
+develop-eggs/
+include/
+local/
+_build
+__pycache__
+.cache
+.vagrant
+# files
+pip-selfcheck.json
+.python-version
+.Python
+.coverage*
+coverage.xml
+Vagrantfile
+/dist/
+/.vscode/
+/.pytest_cache/
+/tmpdist
+/.installed.cfg
+/Pipfile.lock
+/parts
+/var
+
+# excludes / This Files should go into version control
+!.editorconfig
+!.gitattributes
+!.gitignore
+!.gitkeep
+!.travis.yml
+
