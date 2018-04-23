@@ -22,24 +22,26 @@ See ``--help`` for all options.
 Using the script
 ................
 
+To run the script you can use either a ZEO client instance or a single Zope instance. But if you use a single Zope instance without ZEO, you have to stop the running instance before you can run the script.
+
 Show commandline help:
 
 .. code-block:: bash
 
-    ./bin/instance_reserved run ./scripts/wf-transaction-trigger.py -h
+    ./bin/instance run ./scripts/wf-transaction-trigger.py -h
 
 
 Run the script with custom Plone site path:
 
 .. code-block:: bash
 
-    ./bin/instance_reserved run ./scripts/wf-transaction-trigger.py "/Plone1"
+    ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone1"
 
 
 Run the script with custom Plone site path, custom batch size and in quiet mode:
 
 .. code-block:: bash
 
-    ./bin/instance_reserved run ./scripts/wf-transaction-trigger.py "/Plone" -b 50 --quiet
+    ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone" -b 50 --quiet
 
 **Note:** If you are running the script in quiet mode, you probably want also to disable deprecation warnings for this instance: see `deprecation-warnings <https://docs.plone.org/develop/styleguide/deprecation.html#enable-deprecation-warnings>`_.
