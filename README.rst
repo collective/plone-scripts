@@ -1,7 +1,7 @@
 Plone command line scripts
 ==========================
 
-A collection of command line scripts for Plone.
+A collection of command line scripts for Plone. For a list of all scripts and examples look into the scripts folder.
 
 
 Workflow-Transaction-Trigger
