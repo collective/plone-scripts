@@ -45,3 +45,9 @@ Run the script with custom Plone site path, custom batch size and in quiet mode:
     ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone" -b 50 --quiet
 
 **Note:** If you are running the script in quiet mode, you probably want also to disable deprecation warnings for this instance: see `deprecation-warnings <https://docs.plone.org/develop/styleguide/deprecation.html#enable-deprecation-warnings>`_.
+
+Setting a custom hostname, useful if you are generating emails.
+
+.. code-block:: bash
+
+    ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone" --quiet --hostname example.com
