@@ -33,6 +33,22 @@ parser.add_argument(
     help='Do a transaction commit every N items. Default: 100',
 )
 parser.add_argument(
+    '--hostname',
+    action="store",
+    dest="hostname",
+    default="nohost",
+    nargs='?',
+    help='Define the hostname, Plone should use for creating urls. Default: nohost',  # NOQA: E501
+)
+parser.add_argument(
+    '--protocol',
+    action="store",
+    dest="protocol",
+    default="http",
+    nargs='?',
+    help='Define the protocol, Plone should use for creating urls. Default: http',  # NOQA: E501
+)
+parser.add_argument(
     '--quiet',
     action='store_true',
     help='Only show errors. Useful for cronjobs.',
@@ -74,6 +90,9 @@ log.addHandler(handler)
 # script configuration:
 plonesite_path = args.plonesite_path
 commit_batch_size = args.commit_batch_size
+protocol = args.protocol
+hostname = args.hostname
+port = protocol == 'http' and '80' or '443'
 
 
 class ScriptWrapper():
@@ -85,9 +104,18 @@ class ScriptWrapper():
         """
         setSite(portal)
         self.portal = portal
+        request = self.portal.REQUEST
+        request['PARENTS'] = [self.portal]
+        request.setServerURL(
+            protocol=protocol,
+            hostname=hostname,
+            port=port,
+        )
+        request.setVirtualRoot('')
 
     def run(self):
         """ run your code here """
+        print(self.portal.news.absolute_url())
 
 
 if __name__ == "__main__":
