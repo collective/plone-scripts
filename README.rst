@@ -3,6 +3,11 @@ Plone command line scripts
 
 A collection of command line scripts for Plone. For a list of all scripts and examples look into the scripts folder.
 
+Contribute
+----------
+
+You have a useful script you want to share, please add this to this repository via a PR.
+
 
 Workflow-Transaction-Trigger
 ----------------------------
