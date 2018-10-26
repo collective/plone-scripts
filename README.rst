@@ -6,7 +6,8 @@ A collection of command line scripts for Plone. For a list of all scripts and ex
 Contribute
 ----------
 
-You have a useful script you want to share, please add this to this repository via a PR.
+You have a useful script you want to share? 
+We would like you to add this to the repository via a PR.
 
 
 Workflow-Transaction-Trigger
