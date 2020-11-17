@@ -1,12 +1,19 @@
 import argparse
+import csv
 import logging
+import os
+import pdb
 import sys
+import transaction
 
+from plone import api
+from plone.registry.interfaces import IRegistry
+from zope.component import getMultiAdapter, getUtility
 from zope.site.hooks import setSite
+from Products.CMFCore.utils import getToolByName
 
 # from Acquisition import aq_inner
 # from Products.CMFPlone.utils import safe_unicode
-# from plone import api
 
 
 def get_base_parser():
@@ -105,17 +112,19 @@ class BaseScriptWrapper:
 #################
 
 
-SCRIPTNAME = u"plone-scripts: example"
+SCRIPTNAME = u"plone-scripts: import_users_from_csv.py"
 
 
 parser = get_base_parser()
 
-## custom arguments:
-# parser.add_argument(
-#     '--someflag',
-#     action='store_true',
-#     help='Some flag to control things.',
-# )
+parser.add_argument(
+    "--csv",
+    action="store",
+    dest="csv_file",
+    default="users.csv",
+    nargs="?",
+    help="Path to CSV file with users to import. Default: users.csv",
+)
 
 # remove -c script_name from args before argparse runs:
 if "-c" in sys.argv:
@@ -133,7 +142,76 @@ class ScriptWrapper(BaseScriptWrapper):
 
     def run(self):
         """ run your code here """
-        print(self.portal.news.absolute_url())
+        with open(self.args.csv_file, "r") as f:
+            users_reader = csv.DictReader(f, delimiter=";", quotechar='"')
+            for user in users_reader:
+                if api.user.get(username=user["email"]):
+                    continue
+                self.add_user(user["email"], user["email"], user["fullname"])
+            transaction.commit()
+
+    def add_user(self, username, email, fullname):
+        user = api.user.create(email=email, properties={"fullname": fullname,},)
+        self.notify_user(user, email, fullname)
+
+    def notify_user(self, user, email, fullname):
+        registry = getUtility(IRegistry)
+        encoding = registry.get("plone.email_charset", "utf-8")
+        registered_notify_template = getMultiAdapter(
+            (self, self.request), name="registered_notify_template"
+        )
+        pwrt = getToolByName(self.portal, 'portal_password_reset')
+        reset = pwrt.requestReset(email)
+        reset_url = "{0}/passwordreset/{1}?userid={2}".format(
+            self.portal.absolute_url(),
+            reset['randomstring'],
+            email,
+        )
+        subject = "Your user account at example.com"
+        message = """Dear {fullname},
+
+We created a user account for you.
+
+your account login name is: {email}
+
+Please activate your account here before: {expires}.
+To activate follow this link and set your own password: {reset_url}
+
+Your Website Admin
+        """.format(
+            email=email,
+            fullname=fullname,
+            reset_url=reset_url,
+            expires=reset['expires'].strftime("%d.%m.%Y"),
+        )
+        try:
+            mail_host = api.portal.get_tool(name="MailHost")
+            api.portal.send_email(
+                recipient=email, subject=subject, body=message, immediate=True,
+            )
+            log.info("Send email to: {0}".format(email))
+        except Exception as e:
+            log.debug(e)
+
+
+class UnicodeReader:
+    """
+    A CSV reader which will iterate over lines in the CSV file "f",
+    which is encoded in the given encoding.
+    """
+
+    def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
+        f = UTF8Recoder(f, encoding)
+        self.reader = csv.reader(f, dialect=dialect, **kwds)
+
+    def __next__(self):
+        row = next(self.reader)
+        return row
+
+    next = __next__  # BBB for Python2
+
+    def __iter__(self):
+        return self
 
 
 if __name__ == "__main__":
