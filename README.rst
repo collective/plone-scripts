@@ -6,7 +6,7 @@ A collection of command line scripts for Plone. For a list of all scripts and ex
 Contribute
 ----------
 
-You have a useful script you want to share? 
+You have a useful script you want to share?
 We would like you to add this to the repository via a PR.
 
 
@@ -57,3 +57,13 @@ Setting a custom hostname, useful if you are generating emails.
 .. code-block:: bash
 
     ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone" --quiet --hostname example.com
+
+
+Import Users from CSV
+=====================
+
+Import user from a CSV files and notify them via email.
+
+.. code-block:: bash
+
+    ./bin/instance run scripts/import_users_from_csv.py "/Plone" --csv=scripts/users.csv   --hostname="example.com"
