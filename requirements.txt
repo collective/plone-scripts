@@ -1,2 +1,3 @@
-setuptools==38.2.3
-zc.buildout==2.11.1
+-c constraints.txt
+setuptools
+zc.buildout

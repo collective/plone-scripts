@@ -37,4 +37,4 @@ Vagrantfile
 !.gitignore
 !.gitkeep
 !.travis.yml
-
+/eggs
