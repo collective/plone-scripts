@@ -13,12 +13,12 @@ We would like you to add this to the repository via a PR.
 Workflow-Transaction-Trigger
 ----------------------------
 
-This script triggers a workflow transaction for objects which fulfils a certain condition, like reaching a expiration date.
+This script triggers a workflow transaction for objects which fulfills a certain condition, like reaching a expiration date.
 
 Features
 --------
 
-- optional Plone site path paramter
+- optional Plone site path parameter
 - optional commit_batch_size parameter to force commits after N items
 - quiet and verbose options
 
@@ -30,7 +30,7 @@ Using the script
 
 To run the script you can use either a ZEO client instance or a single Zope instance. But if you use a single Zope instance without ZEO, you have to stop the running instance before you can run the script.
 
-Show commandline help:
+Show command line help:
 
 .. code-block:: bash
 
@@ -58,7 +58,6 @@ Setting a custom hostname, useful if you are generating emails.
 
     ./bin/instance run ./scripts/wf-transaction-trigger.py "/Plone" --quiet --hostname example.com
 
-
 Import Users from CSV
 =====================
 
@@ -67,3 +66,16 @@ Import user from a CSV files and notify them via email.
 .. code-block:: bash
 
     ./bin/instance run scripts/import_users_from_csv.py "/Plone" --csv=scripts/users.csv   --hostname="example.com"
+
+
+Fix layout properties
+=====================
+
+You can replace/remove a layout property from all objects, as follow.
+
+.. code-block:: bash
+
+    ./bin/instance run scripts/fix_layout_property.py --layout=galleryview --layout-new=photo-gallery
+
+
+

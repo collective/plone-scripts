@@ -38,3 +38,4 @@ Vagrantfile
 !.gitkeep
 !.travis.yml
 /eggs
+/venv/
